@@ -108,9 +108,14 @@ func (p *PartialDriver) Next(version uint) (nextVersion uint, err error) {
 // ReadUp is part of source.Driver interface implementation.
 func (p *PartialDriver) ReadUp(version uint) (r io.ReadCloser, identifier string, err error) {
 	if m, ok := p.migrations.Up(version); ok {
-		body, err := p.fs.Open(path.Join(p.path, m.Raw))
+		upPath := path.Join(p.path, m.Raw)
+		body, err := p.fs.Open(upPath)
 		if err != nil {
-			return nil, "", err
+			return nil, "", &os.PathError{
+				Op: "open",
+				Path: upPath,
+				Err: err,
+			}
 		}
 		return body, m.Identifier, nil
 	}
@@ -124,9 +129,14 @@ func (p *PartialDriver) ReadUp(version uint) (r io.ReadCloser, identifier string
 // ReadDown is part of source.Driver interface implementation.
 func (p *PartialDriver) ReadDown(version uint) (r io.ReadCloser, identifier string, err error) {
 	if m, ok := p.migrations.Down(version); ok {
-		body, err := p.fs.Open(path.Join(p.path, m.Raw))
+		downPath := path.Join(p.path, m.Raw)
+		body, err := p.fs.Open(downPath)
 		if err != nil {
-			return nil, "", err
+			return nil, "", &os.PathError{
+				Op: "open",
+				Path: downPath,
+				Err: err,
+			}
 		}
 		return body, m.Identifier, nil
 	}
