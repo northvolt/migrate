@@ -11,9 +11,9 @@ import (
 )
 
 import (
-	dStub "github.com/golang-migrate/migrate/v4/database/stub"
-	"github.com/golang-migrate/migrate/v4/source"
-	sStub "github.com/golang-migrate/migrate/v4/source/stub"
+	dStub "github.com/northvolt/migrate/v4/database/stub"
+	"github.com/northvolt/migrate/v4/source"
+	sStub "github.com/northvolt/migrate/v4/source/stub"
 )
 
 // sourceStubMigrations hold the following migrations:
